@@ -85,12 +85,22 @@ async def store_datasets(
     else:
         paths.upload_b.unlink(missing_ok=True)
 
+    cap = settings.upload_max_rows_per_dataset()
     try:
-        df_a = pd.read_csv(paths.upload_a)
-        df_b = pd.read_csv(paths.upload_b) if dual else None
+        df_a = pd.read_csv(paths.upload_a, nrows=cap)
+        df_b = pd.read_csv(paths.upload_b, nrows=cap) if dual else None
     except Exception as e:
         log_event(logger, "upload.parse_failed", error=str(e))
         raise ValidationError(f"Could not parse CSV: {e}") from e
+
+    # Replace on-disk uploads with the capped sample so cleaning/training stay small and fast.
+    try:
+        df_a.to_csv(paths.upload_a, index=False)
+        if df_b is not None:
+            df_b.to_csv(paths.upload_b, index=False)
+    except Exception as e:
+        log_event(logger, "upload.write_sample_failed", error=str(e))
+        raise ValidationError(f"Could not write sampled CSV: {e}") from e
 
     ws.merge_manifest(
         {
@@ -114,6 +124,7 @@ async def store_datasets(
         path_a=str(paths.upload_a),
         path_b=str(paths.upload_b) if dual else None,
         dual=dual,
+        max_rows_per_dataset=cap,
     )
 
     return {

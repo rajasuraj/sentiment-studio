@@ -6,6 +6,7 @@ import asyncio
 from io import BytesIO
 from unittest.mock import MagicMock
 
+import pandas as pd
 import pytest
 from starlette.datastructures import UploadFile
 
@@ -68,4 +69,32 @@ def test_single_file_upload_parses(workspace_tmp) -> None:
     assert out["rows_a"] == 1
     assert out["rows_b"] == 0
     assert "text" in out["columns_a"]
+
+
+def test_upload_truncates_to_max_rows(workspace_tmp, monkeypatch: pytest.MonkeyPatch) -> None:
+    paths = get_settings().paths()
+    rows = ["text,label"] + [f"line{i},pos" for i in range(20)]
+    body = "\n".join(rows).encode()
+
+    class _S:
+        def max_upload_bytes(self) -> int:
+            return 1024 * 1024
+
+        def paths(self):
+            return paths
+
+        def upload_max_rows_per_dataset(self):
+            return 5
+
+    monkeypatch.setattr(up, "get_settings", lambda: _S())
+    csv_a = UploadFile(filename="wide.csv", file=BytesIO(body))
+
+    async def _go():
+        return await up.store_datasets(csv_a, None)
+
+    out = asyncio.run(_go())
+    assert out["rows_a"] == 5
+    saved = pd.read_csv(paths.upload_a)
+    assert len(saved) == 5
+    assert saved.iloc[-1]["text"] == "line4"
 

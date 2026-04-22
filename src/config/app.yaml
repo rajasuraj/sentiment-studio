@@ -23,6 +23,9 @@ config_files:
 upload:
   # Sentiment140-style dumps are often 200MB+; lower if you only use prepared CSVs.
   max_upload_mb: 400
+  # Testing / steady runs: keep only the first N data rows per uploaded file (faster clean/train).
+  # Set to 0 to disable and use the full file. Override with env SENTIMENT_UPLOAD_MAX_ROWS.
+  max_rows_per_dataset: 500
 
 logging:
   level: "INFO"

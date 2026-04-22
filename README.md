@@ -25,7 +25,7 @@ Full-stack application: **FastAPI** backend (modular `src/sentiment_app`) and **
 | Method | Path | Description |
 |--------|------|-------------|
 | `GET` | `/healthcheck` | Liveness |
-| `POST` | `/api/upload` | Multipart `file_a` (required), `file_b` (optional CSV) |
+| `POST` | `/api/upload` | Multipart `file_a` (required), `file_b` (optional CSV). Each file is stored as the **first N rows** only (default **500**, see `upload.max_rows_per_dataset` in `src/config/app.yaml`; set **`0`** or env `SENTIMENT_UPLOAD_MAX_ROWS=0` for no cap). |
 | `POST` | `/api/clean` | JSON: `dataset_a` required, `dataset_b` optional if only one file was uploaded |
 | `POST` | `/api/train-ml` | GridSearchCV training, saves `model_ml.pkl` + metrics |
 | `POST` | `/api/train-dl` | HF + PyTorch fine-tune, saves transformer + metrics |

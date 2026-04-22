@@ -105,6 +105,22 @@ class AppSettings:
         mb = float(self._app.get("upload", {}).get("max_upload_mb", 50))
         return int(mb * 1024 * 1024)
 
+    def upload_max_rows_per_dataset(self) -> int | None:
+        """First N rows kept per CSV after upload; None means no cap."""
+        env = os.environ.get("SENTIMENT_UPLOAD_MAX_ROWS", "").strip()
+        raw: object
+        if env != "":
+            try:
+                raw = int(env)
+            except ValueError:
+                raw = self._app.get("upload", {}).get("max_rows_per_dataset", 500)
+        else:
+            raw = self._app.get("upload", {}).get("max_rows_per_dataset", 500)
+        if raw is None:
+            return None
+        n = int(raw)
+        return None if n <= 0 else n
+
     def log_level(self) -> str:
         return str(self._app.get("logging", {}).get("level", "INFO")).upper()
 
