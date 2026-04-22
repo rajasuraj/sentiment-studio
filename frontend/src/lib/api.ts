@@ -1,9 +1,38 @@
 const BASE = import.meta.env.VITE_API_BASE ?? "";
 
+/** Turn FastAPI / plain error bodies into a short string for toasts. */
+export function formatApiErrorBody(text: string, statusText: string): string {
+  const raw = text.trim();
+  if (!raw) return statusText || "Request failed";
+  try {
+    const j = JSON.parse(raw) as Record<string, unknown>;
+    const detail = j.detail;
+    if (typeof detail === "string") return detail;
+    if (Array.isArray(detail)) {
+      const parts = detail.map((item) => {
+        if (item && typeof item === "object" && "msg" in item) {
+          const o = item as { loc?: unknown[]; msg?: unknown };
+          const loc = Array.isArray(o.loc)
+            ? o.loc.filter((x): x is string => typeof x === "string" && x !== "body").join(" · ")
+            : "";
+          const msg = String(o.msg ?? "Invalid request");
+          return loc ? `${loc}: ${msg}` : msg;
+        }
+        return String(item);
+      });
+      const joined = parts.filter(Boolean).join(" · ");
+      if (joined) return joined;
+    }
+  } catch {
+    /* not JSON */
+  }
+  return raw.length > 320 ? `${raw.slice(0, 317)}…` : raw;
+}
+
 async function parse<T>(r: Response): Promise<T> {
   if (!r.ok) {
     const t = await r.text();
-    throw new Error(t || r.statusText);
+    throw new Error(formatApiErrorBody(t, r.statusText));
   }
   return r.json() as Promise<T>;
 }
