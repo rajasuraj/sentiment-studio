@@ -1,0 +1,47 @@
+{
+  "accuracy": 1.0,
+  "macro_f1": 1.0,
+  "per_class": {
+    "negative": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "neutral": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "positive": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  "labels": [
+    "negative",
+    "neutral",
+    "positive"
+  ],
+  "confusion_matrix": [
+    [
+      53,
+      0,
+      0
+    ],
+    [
+      0,
+      53,
+      0
+    ],
+    [
+      0,
+      0,
+      54
+    ]
+  ],
+  "training_time_seconds": 3.2742957998998463,
+  "best_cv_score": 1.0,
+  "inference_ms_per_sample": 1.6128287490573712,
+  "model_size_mb": 0.2667818069458008
+}

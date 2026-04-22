@@ -1,0 +1,23 @@
+paths:
+  cleaned_dataset: "data/workspace/cleaned_dataset.csv"
+  model_dir: "data/workspace/models/dl/transformer"
+  label_map: "data/workspace/label_map.json"
+  metrics_output: "data/workspace/dl_metrics.json"
+
+model:
+  name: "distilbert-base-uncased"
+  num_labels: 3
+  max_length: 128
+
+training:
+  batch_size: 16
+  learning_rate: 2.0e-5
+  weight_decay: 0.01
+  max_epochs: 3
+  warmup_ratio: 0.1
+  val_ratio: 0.15
+  early_stopping_patience: 2
+  seed: 42
+  inference_benchmark_samples: 32
+
+device: "auto"

@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --surface: #ffffff;
+    --surface-muted: #f4f6f9;
+    --border: rgba(15, 23, 42, 0.08);
+    --ring: rgba(79, 70, 229, 0.35);
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-surface-muted text-ink-900 antialiased font-sans text-[15px] leading-relaxed;
+  }
+
+  ::selection {
+    @apply bg-accent-muted text-accent-hover;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-slate-200/80 bg-white shadow-card transition-shadow duration-200;
+  }
+
+  .card-hover:hover {
+    @apply shadow-card-hover border-slate-200;
+  }
+
+  .focus-ring {
+    @apply outline-none ring-2 ring-offset-2 ring-offset-white ring-[var(--ring)];
+  }
+}

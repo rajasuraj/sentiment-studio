@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.venv/
+venv/
+.env
+.env.*
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Tests / tooling
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# Node / frontend
+frontend/node_modules/
+frontend/dist/
+frontend/*.tsbuildinfo
+
+# Workspace artifacts (generated at runtime)
+data/workspace/**/*
+!data/workspace/.gitkeep
+
+# Large sources / trained weights (regenerate locally)
+data/raw/Tweets.csv
+data/models/**/*
+!data/models/.gitkeep
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Logs / DB copies
+*.log
+*.db-journal

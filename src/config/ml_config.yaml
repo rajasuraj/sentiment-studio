@@ -1,0 +1,36 @@
+# Classical ML — paths overridden at runtime from workspace
+paths:
+  cleaned_dataset: "data/workspace/cleaned_dataset.csv"
+  model_output: "data/workspace/models/ml/model_ml.pkl"
+  vectorizer_output: "data/workspace/models/ml/vectorizer.pkl"
+  metrics_output: "data/workspace/ml_metrics.json"
+
+random_state: 42
+test_size: 0.2
+inference_benchmark_samples: 120
+
+classifier: "logistic_regression"
+
+tfidf:
+  lowercase: true
+  strip_accents: "unicode"
+  min_df: 1
+  ngram_range: [1, 1]
+
+grid_search:
+  tfidf__max_features: [2000, 6000]
+  tfidf__ngram_range:
+    - [1, 1]
+    - [1, 2]
+  clf__C: [0.1, 1.0, 5.0]
+
+cv_folds: 3
+
+logistic_regression:
+  max_iter: 2000
+  solver: "lbfgs"
+  multi_class: "multinomial"
+  n_jobs: -1
+
+linear_svc:
+  max_iter: 4000

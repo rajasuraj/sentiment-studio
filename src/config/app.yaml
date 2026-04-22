@@ -1,0 +1,36 @@
+# Application settings. Override workspace with env SENTIMENT_WORKSPACE_ROOT (absolute or relative to repo root).
+workspace_root: "data/workspace"
+
+# Paths relative to workspace_root (all configurable)
+paths:
+  upload_a: "uploads/dataset_a.csv"
+  upload_b: "uploads/dataset_b.csv"
+  cleaned_csv: "cleaned_dataset.csv"
+  dataset_stats: "dataset_stats.json"
+  label_map: "label_map.json"
+  ml_model: "models/ml/model_ml.pkl"
+  ml_vectorizer: "models/ml/vectorizer.pkl"
+  ml_metrics: "ml_metrics.json"
+  dl_model_dir: "models/dl/transformer"
+  dl_metrics: "dl_metrics.json"
+  sqlite_db: "predictions.db"
+
+# Config file locations (relative to repo root unless absolute)
+config_files:
+  ml: "src/config/ml_config.yaml"
+  dl: "src/config/dl_config.yaml"
+
+upload:
+  # Sentiment140-style dumps are often 200MB+; lower if you only use prepared CSVs.
+  max_upload_mb: 400
+
+logging:
+  level: "INFO"
+  structured: true
+
+api:
+  cors_origins:
+    - "http://localhost:5173"
+    - "http://127.0.0.1:5173"
+    - "http://localhost:5174"
+    - "http://127.0.0.1:5174"

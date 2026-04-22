@@ -1,0 +1,11 @@
+{
+  "total_samples": 800,
+  "class_distribution": {
+    "positive": 268,
+    "negative": 266,
+    "neutral": 266
+  },
+  "average_text_length_chars": 56.83625,
+  "min_text_length_chars": 45,
+  "max_text_length_chars": 75
+}
