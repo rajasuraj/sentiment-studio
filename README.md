@@ -53,7 +53,15 @@ Pages: **Upload → Cleaning → Train → Dashboard → Predict → Logs**.
 
 ### Vercel (frontend only)
 
-After the repo is on GitHub: import the project in [Vercel](https://vercel.com), set **Root Directory** to `frontend`, install/build defaults (`npm run build`, output `dist`), and set **`VITE_API_BASE`** to your live API origin. Add that Vercel URL to FastAPI CORS in `src/config/app.yaml` (or your deployment config) so the browser can call the backend.
+The API uses **PyTorch + local workspace files**; deploy the **React app** on Vercel and run the **FastAPI** backend elsewhere (Railway, Render, Fly.io, a VM, etc.).
+
+**Option A — recommended:** In Vercel → Project → Settings → General, set **Root Directory** to `frontend`. Framework **Vite** is auto-detected; build output **`dist`**. Add env **`VITE_API_BASE`** = your deployed API base URL (no trailing slash). `frontend/vercel.json` adds SPA fallbacks for client-side routes.
+
+**Option B — repo root:** Leave Root Directory at `.` so Vercel uses the root **`vercel.json`**, which runs `npm ci` / `npm run build` under `frontend/` and publishes **`frontend/dist`**.
+
+Do **not** pick the Vercel **FastAPI** preset for this repo unless you add a supported Python entry file and accept serverless limits (the ML stack is too heavy for a typical Vercel Python function). If you see `No fastapi entrypoint found`, switch to **Option A** or **B** above.
+
+Add your Vercel site origin to FastAPI CORS in `src/config/app.yaml` (or env) so the browser can call the backend.
 
 ## Run backend
 
