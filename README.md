@@ -51,6 +51,10 @@ For **very large CSV uploads** (100MB+), create `frontend/.env.development` with
 
 Pages: **Upload → Cleaning → Train → Dashboard → Predict → Logs**.
 
+### Vercel (frontend only)
+
+After the repo is on GitHub: import the project in [Vercel](https://vercel.com), set **Root Directory** to `frontend`, install/build defaults (`npm run build`, output `dist`), and set **`VITE_API_BASE`** to your live API origin. Add that Vercel URL to FastAPI CORS in `src/config/app.yaml` (or your deployment config) so the browser can call the backend.
+
 ## Run backend
 
 ```powershell
